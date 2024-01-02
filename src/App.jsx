@@ -38,8 +38,8 @@ function App() {
   useEffect(() => { setContent(getValue(textContent)) }, [textContent]);
 
   function handled_copy_event() {
-    const copied = `ContentBoxCreator.fromObject(${content})`;
-    navigator.clipboard.writeText(copied);
+    const copied = content ? format(content) : textContent;
+    navigator.clipboard.writeText(`ContentBoxCreator.fromObject(${copied})`);
   }
 
   function setContent_(key, value) {
