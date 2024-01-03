@@ -6,11 +6,39 @@ import { useEffect } from 'react';
 import { ShowPlain, ShowKey, ShowKeys, Show2DKeys, ShowTable } from './itemShower';
 import { MdOpenInFull } from "react-icons/md";
 
+const defaultContent = `
+{
+  references: [
+      {
+          rawContent: "test",
+          isLatex: false,
+          classes: ""
+      }
+  ],
+  title: {
+      rawContent: "test",
+      isLatex: false,
+      classes: ""
+  },
+  description: {
+      rawContent: "test",
+      isLatex: false,
+      classes: "test"
+  },
+  equation: {
+      rawContent: "$test$",
+      isLatex: true,
+      classes: ""
+  },
+  image: "test"
+}`;
+
 function getValue(strContent) {
   try {
     let evaled = eval(`(${strContent})`);
     if (typeof evaled === 'object' && evaled.title != undefined && evaled.references != undefined) {
       const results = Object.fromEntries(Object.entries(evaled).map(([key, content]) => [key, !["image", "video"].includes(key) ? SpecialText.parseJSON(content) : content]));
+      console.log(results);
       return results;
     }
   }
@@ -19,9 +47,9 @@ function getValue(strContent) {
   }
 }
 
-function format(obj)
+function format(obj, tab=4)
 {
-    var str = JSON.stringify(obj, null, 4),
+    var str = JSON.stringify(obj, null, tab),
         arr = str.match(/".*?":/g);
 
     for(var i = 0; i < arr.length; i++)
@@ -31,14 +59,14 @@ function format(obj)
 }
 
 function App() {
-  const [textContent, setTextContent] = useState("");
+  const [textContent, setTextContent] = useState(defaultContent);
   const [content, setContent] = useState(null);
   const [height, setHeight] = useState(0);
 
   useEffect(() => { setContent(getValue(textContent)) }, [textContent]);
 
   function handled_copy_event() {
-    const copied = content ? format(content) : textContent;
+    const copied = content ? format(content, 0) : textContent;
     navigator.clipboard.writeText(`ContentBoxCreator.fromObject(${copied})`);
   }
 
@@ -59,7 +87,7 @@ function App() {
               className="bg-white bg-opacity-35 rounded-lg p-2 w-fit h-fit disabled:opacity-30"
               aria-expanded={height !== 0}
               aria-controls="panel"
-              disabled={content === null}
+              disabled={!(content?.references || content?.title)}
               onClick={() => {
                 setHeight(height === 0 ? 'auto' : 0)
               }}
