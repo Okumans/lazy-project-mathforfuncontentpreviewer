@@ -47,21 +47,30 @@ function getValue(strContent) {
   }
 }
 
-function format(obj, tab=4)
-{
-    var str = JSON.stringify(obj, null, tab),
-        arr = str.match(/".*?":/g);
+function format(obj, tab = 4, shorthand = false) {
+  var str = JSON.stringify(obj, (key, value) => {
+    if (value instanceof SpecialText) {
+      return shorthand ? `<''${value.rawContent}''${value.isLatex ? " | " + true : ""}${value.classes.length ? " | {" + value.classes + "}" : ""}>` : value;
+    }
+    return value;
 
-    for(var i = 0; i < arr.length; i++)
-        str = str.replace(arr[i], arr[i].replace(/"/g,''));
+  }, tab),
 
-    return str;
+  str = str.replace(/"([^"]*)":/g, (match, group) => `${group}:`);
+  
+  const regex = /"(<[^>]+>)"/g;
+  str = str.replace(regex, '$1');
+
+  console.log(str);
+
+  return str;
 }
 
 function App() {
   const [textContent, setTextContent] = useState(defaultContent);
   const [content, setContent] = useState(null);
   const [height, setHeight] = useState(0);
+  const [textAreaFocused, setTextAreaFocused] = useState(false);
 
   useEffect(() => { setContent(getValue(textContent)) }, [textContent]);
 
@@ -100,7 +109,12 @@ function App() {
         <textarea
           className="w-5/6 min-h-56 h-auto flex flex-grow text-white  p-2 font-semibold rounded-md text-lg text-left tracking-[0] leading-[normal] bg-white bg-opacity-20"
           placeholder='json content.'
-          value={content ? format(content) : textContent}
+          value={content ? (!textAreaFocused ? format(content, 4, true) : textContent) : textContent}
+          onFocus={() => setTextAreaFocused(true)}
+          onBlur={() => {
+            setTextAreaFocused(false)
+            setTextContent(content ? format(content) : textContent);
+          }}
           onChange={(e) => setTextContent(e.target.value)} />
 
         {/* 
