@@ -37,15 +37,18 @@ export class SpecialText {
         switch (typeof text) {
             case 'string':
                 return SpecialText.fromString(text);
-            case SpecialText:
-                return text;
+            case 'object':
+                if (text instanceof SpecialText)
+                    return text;
+                else if (text.rawContent || text.isLatex || text.classes)
+                    return new SpecialText(text.rawContent || "", text.isLatex || false, text.classes || "")
             default:
                 return text;
         }
     }
-
+    
     static recursiveNestToSpecialText = (arr) => {
-        arr.forEach((element, index, array) => {
+        Array.isArray(arr) && arr.forEach((element, index, array) => {
             if (Array.isArray(element)) {
                 SpecialText.recursiveNestToSpecialText(element);
             } else {
@@ -108,7 +111,7 @@ export class SpecialText {
                 return new SpecialText(matches[0] || "", (matches[1] === "true") || false, matches[2] || "")
             return new SpecialText(elements);
         }
-        return new SpecialText("");
+        return undefined;
     }
 
 }

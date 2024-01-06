@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { ShowPlain, ShowKey, ShowKeys, Show2DKeys, ShowTable } from './itemShower';
 import { MdOpenInFull } from "react-icons/md";
 import { ComponentsManager } from './componentsManager';
+import { IoMdRefresh } from "react-icons/io";
 
 const defaultContent = `
 {
@@ -27,8 +28,9 @@ function getValue(strContent) {
   try {
     let evaled = eval(`(${strContent})`);
     if (typeof evaled === 'object' && evaled.title != undefined && evaled.references != undefined) {
+      console.log(evaled, "dfdsfasdfadsfasdfad");
       const results = Object.fromEntries(Object.entries(evaled).map(([key, content]) => [key, !["image", "video"].includes(key) ? SpecialText.parseJSON(content) : content]));
-      console.log(results);
+      console.log(results, "aaaaaaaa");
       return results;
     }
   }
@@ -61,6 +63,7 @@ function App() {
   const [content, setContent] = useState(null);
   const [height, setHeight] = useState(0);
   const [textAreaFocused, setTextAreaFocused] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(0);
 
   useEffect(() => { setContent(getValue(textContent)) }, [textContent]);
 
@@ -75,7 +78,7 @@ function App() {
   }
 
   function removeContent_(key) {
-    const temp = {...content};
+    const temp = { ...content };
     delete temp[key];
     console.log(temp)
     setContent(temp);
@@ -90,8 +93,17 @@ function App() {
             Previewer
           </p>
           <div className='flex items-center gap-2'>
+            {/* <button 
+              className='bg-white bg-opacity-35 rounded-lg p-2 w-fit h-fit disabled:opacity-30 hover:bg-opacity-55 transition-all'
+              onClick={() => {
+                const temp = {...content};
+                console.log("refresh...")
+                setForceUpdate(Math.random());
+              }}>
+              <IoMdRefresh className='w-6 h-6' fill="white" />
+            </button> */}
             <button
-              className="bg-white bg-opacity-35 rounded-lg p-2 w-fit h-fit disabled:opacity-30"
+              className="bg-white bg-opacity-35 rounded-lg p-2 w-fit h-fit disabled:opacity-30 hover:bg-opacity-55 transition-all"
               aria-expanded={height !== 0}
               aria-controls="panel"
               disabled={!(content?.references || content?.title)}
@@ -131,10 +143,10 @@ function App() {
           duration={500}
           height={height}
           className='w-5/6'>
-          <ComponentsManager 
-            content={content} 
-            setContent_={setContent_} 
-            removeContent_={removeContent_}/>
+          <ComponentsManager
+            content={content}
+            setContent_={setContent_}
+            removeContent_={removeContent_} />
 
           <div className='w-full flex gap-2 flex-wrap'>
             <ShowKeys kkey="references" content={content} setContent_={setContent_} />
@@ -152,7 +164,7 @@ function App() {
 
             {content?.image || content?.image === "" ?
               <ShowPlain kkey="image" content={content} setContent_={setContent_} />
-              : content?.video || content?.video === ""?
+              : content?.video || content?.video === "" ?
                 <ShowPlain kkey="video" content={content} setContent_={setContent_} />
                 : null
             }
@@ -167,7 +179,7 @@ function App() {
         </div>
 
         <div className="flex w-full justify-center m-4">
-          <div className="flex flex-col w-5/6 gap-2">
+          <div className="flex flex-col w-5/6 gap-2" key={forceUpdate}>
             {content ? ContentBoxCreator.fromObject(content).content : null}
           </div>
         </div>

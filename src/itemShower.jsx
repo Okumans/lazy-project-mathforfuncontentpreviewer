@@ -77,7 +77,7 @@ export function ShowKeys({ kkey, content, setContent_ }) {
       <div className="flex justify-between">
         <p className='text-2xl font-bold text-white capitalize'>{kkey}</p>
         <button
-          className="py-1 px-1.5 bg-white rounded-lg bg-opacity-30"
+          className="py-1 px-1.5 bg-white rounded-lg bg-opacity-30 hover:bg-opacity-55 transition-all hover:scale-105"
           onClick={() => {
             setContent_(kkey, [...content[kkey], SpecialText.fromString("")]);
           }}>
@@ -90,7 +90,7 @@ export function ShowKeys({ kkey, content, setContent_ }) {
 
             {content[kkey]?.length > 1 ?
               <button
-                className="p-1 bg-white rounded-lg bg-opacity-30"
+                className="p-1 bg-white rounded-lg bg-opacity-30 hover:bg-opacity-55 transition-all hover:scale-105"
                 onClick={() => {
                   setContent_(kkey, [...content[kkey].slice(0, index), ...content[kkey].slice(index + 1,)]);
                 }}>
@@ -139,7 +139,7 @@ export function Show2DKeys({ kkey, content, setContent_ }) {
       <div className="flex justify-between">
         <p className='text-2xl font-bold text-white capitalize'>{kkey}</p>
         <button
-          className="py-1 px-1.5 bg-white rounded-lg bg-opacity-30"
+          className="py-1 px-1.5 bg-white rounded-lg bg-opacity-30 hover:bg-opacity-55 transition-all hover:scale-105"
           onClick={() => {
             setContent_(kkey, [...content[kkey], [[SpecialText.fromString(""), SpecialText.fromString("")], [SpecialText.fromString(""), SpecialText.fromString("")]]]);
           }}>
@@ -151,7 +151,7 @@ export function Show2DKeys({ kkey, content, setContent_ }) {
           <div className="flex gap-1">
             {content[kkey]?.length > 1 ?
               <button
-                className="p-1 bg-white rounded-lg bg-opacity-30"
+                className="p-1 bg-white rounded-lg bg-opacity-30 hover:bg-opacity-55 transition-all hover:scale-105"
                 onClick={() => {
                   setContent_(kkey, [...content[kkey].slice(0, index), ...content[kkey].slice(index + 1,)]);
                 }}>
@@ -208,7 +208,7 @@ export function ShowTable({ kkey, content, setContent_ }) {
         <p className='text-2xl font-bold text-white capitalize'>{kkey}</p>
         <div className="flex gap-2">
           <button
-            className="py-1 px-1.5 bg-white rounded-lg bg-opacity-30 flex gap-1 text-white font-semibold items-center"
+            className="py-1 px-1.5 bg-white rounded-lg bg-opacity-30 flex gap-1 text-white font-semibold items-center hover:bg-opacity-55 transition-all hover:scale-105"
             onClick={() => {
               setContent_(kkey, [content[kkey][0], [...content[kkey][1], changeArraySizeWithPadding(new Array, colSize, () => new Array)]]);
             }}>
@@ -287,7 +287,7 @@ export function ShowTable({ kkey, content, setContent_ }) {
               <div className="flex gap-1">
                 { content[kkey][1].length > 1 ?
                 <button
-                  className="p-1 bg-white rounded-lg bg-opacity-30"
+                  className="p-1 bg-white rounded-lg bg-opacity-30 hover:bg-opacity-55 hover:scale-105 transition-all"
                   onClick={() => {
                     setContent_(kkey, [content[kkey][0], [...content[kkey][1].slice(0, index), ...content[kkey][1].slice(index + 1,)]]);
                   }}>

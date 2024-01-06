@@ -36,9 +36,9 @@ export const ContentBox = ({ references, title, description, equation, table, de
                     {/* references */}
                     <div className="flex justify-between">
                         <div className="flex gap-2">
-                            {references.map((reference) =>
+                            {references.map((reference, index) =>
                                 <button
-                                    key={reference.rawContent}
+                                    key={index}
                                     className="w-fit p-1 px-2 text-white text-base md:text-lg font-semibold bg-white bg-opacity-30 rounded-lg shadow-md hover:scale-105 hover:bg-opacity-40 transition ease-in-out"
                                     onClick={(event) => {
                                         event.stopPropagation();
@@ -100,11 +100,11 @@ export const ContentBox = ({ references, title, description, equation, table, de
                             {/* definition */}
                             {definition ?
                                 <table className="gap-2 h-fit">
-                                    {definition.map(([key, value]) =>
-                                        <tbody key={key.rawContent + value.rawContent}>
+                                    {definition?.map(([key, value], index) =>
+                                        <tbody key={index}>
                                             <tr>
-                                                <td><div className="p-1 my-0.5 flex text-white text-base md:text-lg font-medium bg-white bg-opacity-30 rounded-lg shadow-md justify-center">{key.content}</div></td>
-                                                <td><div className="p-1 text-white text-base md:text-lg font-medium bg-opacity-30 text-left break-all">{value.content}</div></td>
+                                                <td><div className="p-1 my-0.5 flex text-white text-base md:text-lg font-medium bg-white bg-opacity-30 rounded-lg shadow-md justify-center">{key?.content}</div></td>
+                                                <td><div className="p-1 text-white text-base md:text-lg font-medium bg-opacity-30 text-left break-all">{value?.content}</div></td>
                                             </tr>
                                         </tbody>
                                     )}
@@ -125,16 +125,16 @@ const TableGenerator = ({ info }) => {
     return <table className="border-2 border-white border-solid w-full ">
         <thead>
             <tr>
-                {headers.map((header) => <th key={header.rawContent} className="border-2 bg-white bg-opacity-20 border-white border-solid p-2">{header.content}</th>)}
+                {headers?.map((header, index) => <th key={index} className="border-2 bg-white bg-opacity-20 border-white border-solid p-2">{header?.content}</th>)}
             </tr>
         </thead>
 
         <tbody>
-            {contents.map((row, index) =>
-                <tr key={index} className="border-2 break-all border-white border-solid">{row.map((col) =>
-                    <td key={col.rawContent} className="border-2 py-3 text-sm sm:text-lg md:text-xl lg:text-2xl border-white border-solid px-3">
+            {contents?.map((row, index) =>
+                <tr key={index} className="border-2 break-all border-white border-solid">{row?.map((col, indexx) =>
+                    <td key={indexx} className="border-2 py-3 text-sm sm:text-lg md:text-xl lg:text-2xl border-white border-solid px-3">
                         <div>
-                            {col.content}
+                            {col?.content}
                         </div>
                     </td>)}
                 </tr>)}
