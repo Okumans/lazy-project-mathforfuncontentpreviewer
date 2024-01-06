@@ -5,7 +5,6 @@ import AnimateHeight from 'react-animate-height';
 import { useEffect } from 'react';
 import { ShowPlain, ShowKey, ShowKeys, Show2DKeys, ShowTable } from './itemShower';
 import { MdOpenInFull } from "react-icons/md";
-import { components } from "react-select"
 
 const defaultContent = `
 {
@@ -33,26 +32,6 @@ const defaultContent = `
   },
   image: "test"
 }`;
-
-const boxComponents = [
-  {value: "title", label: "Title"}, 
-  {value: "description", label: "Description"}, 
-]
-
-const Option = (props) => {
-  return (
-    <div>
-      <components.Option {...props}>
-        <input
-          type="checkbox"
-          checked={props.isSelected}
-          onChange={() => null}
-        />{" "}
-        <label>{props.label}</label>
-      </components.Option>
-    </div>
-  );
-};
 
 function getValue(strContent) {
   try {
@@ -123,7 +102,6 @@ function App() {
               }}
             ><MdOpenInFull className='w-6 h-6' fill="white" /></button>
             <button disabled={content === null} onClick={handled_copy_event} className="text-white font-bold bg-white bg-opacity-35 rounded-lg h-fit p-2 self-center disabled:opacity-30 hover:bg-opacity-55 transition-all">Copy content</button>
-            <Option {...boxComponents}/>
           </div>
         </div>
 

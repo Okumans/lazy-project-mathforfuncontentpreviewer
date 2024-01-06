@@ -1,7 +1,7 @@
 import { SpecialText } from "./specialText";
 import { RxCross2 } from "react-icons/rx"
 import { MdAdd } from "react-icons/md";
-import { useState } from "react";;
+import { useState } from "react";
 
 function changeArraySizeWithPadding(arr, newSize, paddingFn = ((i) => 0)) {
   if (newSize >= arr.length) {
@@ -15,6 +15,7 @@ function changeArraySizeWithPadding(arr, newSize, paddingFn = ((i) => 0)) {
   }
   return arr;
 }
+
 
 export function ShowKey({ kkey, content, setContent_ }) {
   return content ? <>
