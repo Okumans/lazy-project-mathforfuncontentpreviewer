@@ -5,32 +5,22 @@ import AnimateHeight from 'react-animate-height';
 import { useEffect } from 'react';
 import { ShowPlain, ShowKey, ShowKeys, Show2DKeys, ShowTable } from './itemShower';
 import { MdOpenInFull } from "react-icons/md";
+import { ComponentsManager } from './componentsManager';
 
 const defaultContent = `
 {
   references: [
       {
-          rawContent: "test",
+          rawContent: "reference",
           isLatex: false,
           classes: ""
       }
   ],
   title: {
-      rawContent: "test",
+      rawContent: "untitled",
       isLatex: false,
       classes: ""
   },
-  description: {
-      rawContent: "test",
-      isLatex: false,
-      classes: "test"
-  },
-  equation: {
-      rawContent: "$test$",
-      isLatex: true,
-      classes: ""
-  },
-  image: "test"
 }`;
 
 function getValue(strContent) {
@@ -56,8 +46,8 @@ function format(obj, tab = 4, shorthand = false) {
 
   }, tab),
 
-  str = str.replace(/"([^"]*)":/g, (match, group) => `${group}:`);
-  
+    str = str.replace(/"([^"]*)":/g, (match, group) => `${group}:`);
+
   const regex = /"(<[^>]+>)"/g;
   str = str.replace(regex, '$1');
 
@@ -81,15 +71,23 @@ function App() {
 
   function setContent_(key, value) {
     console.log({ ...content, [key]: value }, "dasfasdfas")
-    setContent({ ...content, [key]: value });
+    setContent(preContent => ({ ...preContent, [key]: value }));
   }
+
+  function removeContent_(key) {
+    const temp = {...content};
+    delete temp[key];
+    console.log(temp)
+    setContent(temp);
+  }
+
 
   return (
     <div className="flex flex-row justify-center min-h-screen overflow-clip">
       <div className="flex flex-col w-full bg-purple-950 bg-fixed bg-cover items-center justify-start gap-5">
         <div className='w-5/6 flex justify-between mt-2'>
           <p className="text-white [text-shadow:0px_4px_4px_#00000040] font-bold text-4xl md:text-6xl lg:text-7xl text-center tracking-[0] leading-[normal]">
-            preview
+            Previewer
           </p>
           <div className='flex items-center gap-2'>
             <button
@@ -133,6 +131,11 @@ function App() {
           duration={500}
           height={height}
           className='w-5/6'>
+          <ComponentsManager 
+            content={content} 
+            setContent_={setContent_} 
+            removeContent_={removeContent_}/>
+
           <div className='w-full flex gap-2 flex-wrap'>
             <ShowKeys kkey="references" content={content} setContent_={setContent_} />
             <ShowKey kkey="title" content={content} setContent_={setContent_} />
@@ -147,9 +150,9 @@ function App() {
 
             <Show2DKeys kkey="definition" content={content} setContent_={setContent_} />
 
-            {content?.image ?
+            {content?.image || content?.image === "" ?
               <ShowPlain kkey="image" content={content} setContent_={setContent_} />
-              : content?.video ?
+              : content?.video || content?.video === ""?
                 <ShowPlain kkey="video" content={content} setContent_={setContent_} />
                 : null
             }

@@ -2,6 +2,7 @@ import { SpecialText } from "./specialText";
 import { RxCross2 } from "react-icons/rx"
 import { MdAdd } from "react-icons/md";
 import { useState } from "react";
+import { useEffect } from "react";
 
 function changeArraySizeWithPadding(arr, newSize, paddingFn = ((i) => 0)) {
   if (newSize >= arr.length) {
@@ -18,7 +19,7 @@ function changeArraySizeWithPadding(arr, newSize, paddingFn = ((i) => 0)) {
 
 
 export function ShowKey({ kkey, content, setContent_ }) {
-  return content ? <>
+  return content && content[kkey] ? <>
     <div className='bg-white flex-grow bg-opacity-35 flex flex-col rounded-lg gap-1 px-2 py-2'>
       <p className='text-2xl font-bold text-white capitalize'>{kkey}</p>
       <div className='flex items-center gap-1'>
@@ -87,14 +88,15 @@ export function ShowKeys({ kkey, content, setContent_ }) {
         {content[kkey].map((item, index) =>
           <div className='flex items-center gap-1' key={index}>
 
-            <button
-              className="p-1 bg-white rounded-lg bg-opacity-30"
-              onClick={() => {
-                setContent_(kkey, [...content[kkey].slice(0, index), ...content[kkey].slice(index + 1,)]);
-              }}>
-              <RxCross2 className='w-5 h-5' color="white" />
-            </button>
-
+            {content[kkey]?.length > 1 ?
+              <button
+                className="p-1 bg-white rounded-lg bg-opacity-30"
+                onClick={() => {
+                  setContent_(kkey, [...content[kkey].slice(0, index), ...content[kkey].slice(index + 1,)]);
+                }}>
+                <RxCross2 className='w-5 h-5' color="white" />
+              </button> : null
+            }
             <input
               className="flex-grow rounded-lg p-1 self-center"
               type='text'
@@ -147,13 +149,15 @@ export function Show2DKeys({ kkey, content, setContent_ }) {
       {
         content[kkey].map((items, index) =>
           <div className="flex gap-1">
-            <button
-              className="p-1 bg-white rounded-lg bg-opacity-30"
-              onClick={() => {
-                setContent_(kkey, [...content[kkey].slice(0, index), ...content[kkey].slice(index + 1,)]);
-              }}>
-              <RxCross2 className='w-5 h-5' color="white" />
-            </button>
+            {content[kkey]?.length > 1 ?
+              <button
+                className="p-1 bg-white rounded-lg bg-opacity-30"
+                onClick={() => {
+                  setContent_(kkey, [...content[kkey].slice(0, index), ...content[kkey].slice(index + 1,)]);
+                }}>
+                <RxCross2 className='w-5 h-5' color="white" />
+              </button> : null
+            }
             <div className='bg-white bg-opacity-25 flex-grow flex flex-col rounded-lg gap-1 px-2 py-2 shadow-md' key={index}>
               {
                 items.map((item, indexx) =>
@@ -196,7 +200,7 @@ export function Show2DKeys({ kkey, content, setContent_ }) {
 }
 
 export function ShowTable({ kkey, content, setContent_ }) {
-  const [colSize, setColsize] = useState(0);
+  const [colSize, setColsize] = useState(content?.table ? content.table[1]?.length || 0 : 0);
 
   return content && Array.isArray(content[kkey]) ? <>
     <div className='bg-white flex-grow bg-opacity-35 flex flex-col rounded-lg gap-1 px-2 py-2 '>
@@ -281,13 +285,14 @@ export function ShowTable({ kkey, content, setContent_ }) {
 
             <div className="flex gap-1">
               <div className="flex gap-1">
+                { content[kkey][1].length > 1 ?
                 <button
                   className="p-1 bg-white rounded-lg bg-opacity-30"
                   onClick={() => {
                     setContent_(kkey, [content[kkey][0], [...content[kkey][1].slice(0, index), ...content[kkey][1].slice(index + 1,)]]);
                   }}>
                   <RxCross2 className='w-5 h-5' color="white" />
-                </button>
+                </button> : null}
               </div>
               <div className='border-solid border-white border-2 flex flex-grow flex-col rounded-lg gap-1 px-2 py-2 shadow-md' key={index}>
                 {

@@ -20,7 +20,7 @@ export const ContentBox = ({ references, title, description, equation, table, de
                 }
             </button>
 
-            <button
+            <div
                 className="w-full"
                 aria-expanded={height !== 0}
                 aria-controls="panel"
@@ -114,7 +114,7 @@ export const ContentBox = ({ references, title, description, equation, table, de
 
                     </div>
                 </AnimateHeight>
-            </button>
+            </div>
         </div>
     </div>
 }
