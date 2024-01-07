@@ -8,7 +8,7 @@ export class SpecialText {
     }
 
     get content() {
-        return <div className="flex gap-1 flex-wrap">
+        return <div className="flex gap-1 flex-wrap items-baseline">
             {this.rawContent.split(/(\$.*?\$)/).map((textElement) => {
                 if (textElement.startsWith("$") && textElement.endsWith("$")) {
                     return <p className={this.classes + " font-sans"}>{this.isLatex ? <Latex>{textElement}</Latex> : textElement} </p>
